@@ -1,0 +1,417 @@
+[
+ {
+  "sec": "Visão geral do dataset",
+  "txt": "O voltas.csv tem 277 voltas registradas e 81 colunas originais; todas as 277 estão marcadas como válidas (valida=1).",
+  "fonte": "voltas.csv, linhas 2–278 (contagem; coluna valida)"
+ },
+ {
+  "sec": "Visão geral do dataset",
+  "txt": "Distribuição por carro: Ferrari 144 voltas, Alfa Romeo 129 voltas e McLaren 4 voltas. Ou seja, Ferrari + Alfa somam 273, e não 277: o número oficial de 277 inclui 4 voltas de McLaren (somente S0).",
+  "fonte": "voltas.csv, linhas 2–278 (contagem por carro); McLaren nas linhas 107–110"
+ },
+ {
+  "sec": "Visão geral do dataset",
+  "txt": "Foram 40 sessões de captura distintas (session_uid): 22 da Alfa Romeo, 17 da Ferrari e 1 da McLaren.",
+  "fonte": "voltas.csv, linhas 2–278 (contagem única de session_uid por carro)"
+ },
+ {
+  "sec": "Visão geral do dataset",
+  "txt": "Cada setup tem entre 9 e 34 voltas por carro; o S0 da Ferrari concentra mais voltas (34), pois é rodado no início e no fim das sessões para medir o ruído do piloto.",
+  "fonte": "voltas.csv, linhas 2–278 (contagem por carro × setup_id)"
+ },
+ {
+  "sec": "Visão geral do dataset",
+  "txt": "Todas as voltas são em Mônaco (pista_id=5) e no formato UDP 2023; 238 voltas com pneu visual 'macio' e 39 com 'duro'.",
+  "fonte": "voltas.csv, linhas 2–278 (colunas pista_id, formato_udp, composto_visual)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "42 voltas (15,2%) são voltas de saída e 25 (9,0%) terminam no box, apesar de valida=1. Elas precisam ser filtradas ou tratadas como variável, porque o site diz que essas voltas foram removidas.",
+  "fonte": "voltas.csv, linhas 2–278 (colunas volta_saida, entrou_box)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "Volta de saída média: 77,741 s contra 78,542 s nas demais (Δ = -0,802 s). Curiosamente, nestes dados a volta de saída não é mais lenta, então o registro pode estar marcando de forma imprecisa (verificar a captura).",
+  "fonte": "voltas.csv, linhas 2–278 (média de tempo_volta_ms por volta_saida)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "100 voltas registram ao menos um flashback (máximo 10). Os flashbacks distorcem o tempo e deveriam ser excluídos.",
+  "fonte": "voltas.csv, linhas 2–278 (coluna flashbacks)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "Colunas com valores ausentes: desempenho_igual (277), valida_s1 (6), valida_s2 (6), valida_s3 (6), freio_motor (277), combustivel_inicio (40), vel_min_setor1 (5), vel_min_setor2 (5), vel_min_sainte_devote (5), vel_min_massenet_cassino (5), vel_min_grampo_loews (5), vel_min_portier (5), vel_max_tunel (5), vel_min_chicane_porto (5), vel_min_piscina (5). As colunas desempenho_igual e freio_motor estão 100% vazias.",
+  "fonte": "voltas.csv, linhas 2–278 (contagem de nulos)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "12 colunas são constantes e não têm valor preditivo: formato_udp, pista_id, pista, modo_jogo, valida, valida_s1, valida_s2, valida_s3, avisos_limite_pista, freio_pressao, lastro, dano_asa_diant.",
+  "fonte": "voltas.csv, linhas 2–278 (nunique = 1)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "A fonte do tempo é 'session_history' em 271 voltas e 'lap_data' em 6.",
+  "fonte": "voltas.csv, linhas 2–278 (coluna fonte_tempo)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "Aplicando o corte de 107% da mediana (78,217 s → limite 83,692 s), 1 voltas de Ferrari/Alfa seriam descartadas (linhas 166).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (filtro tempo > 1,07 × mediana)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "Confusão experimental: combustivel_setup NÃO é constante entre setups (vai de 5,0 a 20,0 kg). S4, S7 e S10 rodaram com 5 kg na Alfa, enquanto o S0 da Alfa rodou com 13 kg. Parte do ganho atribuído ao setup pode vir do carro mais leve.",
+  "fonte": "voltas.csv, linhas 2–278 (combustivel_setup por carro × setup_id)"
+ },
+ {
+  "sec": "Qualidade dos dados",
+  "txt": "O S0 da Ferrari não usa os mesmos valores do S0 da Alfa: asa 45/45 contra 50/50, balanço de freio 62 contra 53 e combustível 20 kg contra 13 kg. Por isso as deltas 'vs S0' dos dois carros partem de bases diferentes.",
+  "fonte": "voltas.csv, linha 2 (Ferrari S0) vs linhas da Alfa S0"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "Tempo médio de volta: Ferrari 78,093 s (DP 1,52) e Alfa Romeo 78,658 s (DP 1,51). A Ferrari é 0,565 s mais rápida na média.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (média por carro)"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "Teste de Mann-Whitney entre os carros (todas as voltas): p = 0.0039. A diferença é estatisticamente significativa a 5%.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "Volta mais rápida do dataset: 74,575 s (Ferrari, S10, volta 2).",
+  "fonte": "voltas.csv, linha 114"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "Ferrari: melhor volta 74,575 s (S10) e pior 82,899 s (S4), uma amplitude de 8,32 s.",
+  "fonte": "voltas.csv, linhas 114 e 61"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "Alfa Romeo: melhor volta 75,852 s (S8) e pior 83,795 s (S2), uma amplitude de 7,94 s.",
+  "fonte": "voltas.csv, linhas 251 e 166"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "A McLaren (apenas 4 voltas, S0) fez média de 82,566 s, o carro mais lento da amostra. A amostra é pequena demais para modelar.",
+  "fonte": "voltas.csv, linhas 107–110"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "Médias por setor (Ferrari × Alfa): S1 20,246 × 20,531 s; S2 37,370 × 37,485 s; S3 20,476 × 20,642 s. O setor 2 é o mais longo (~48% da volta).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (colunas setor1_ms, setor2_ms, setor3_ms)"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "Velocidade média por volta: Ferrari 147,4 km/h × Alfa 145,4 km/h; velocidade máxima média: 277,6 × 275,2 km/h.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (vel_media_kmh, vel_max_kmh)"
+ },
+ {
+  "sec": "Comparação entre carros",
+  "txt": "Acelerador a fundo: Ferrari 51,8% da volta × Alfa 51,7%. Tempo freando: 17,9% × 17,6%.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (pct_acelerador_cheio, pct_freando)"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Alfa Romeo: o melhor setup é o S10 (77,60 s, Δ -1,55 s vs S0) e o pior é o S2 (Δ +1,93 s).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (média de tempo por setup_id, carro=alfaromeo)"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Ferrari: o melhor setup é o S10 (76,77 s, Δ -1,54 s vs S0) e o pior é o S2 (Δ +1,09 s).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (média de tempo por setup_id, carro=ferrari)"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Confirmado: o S10 (sugerido por IA) deixa a Alfa 1,55 s e a Ferrari 1,54 s mais rápidas que o S0 na média. Os números oficiais (−1,55 / −1,54 s) batem com os dados.",
+  "fonte": "voltas.csv, Alfa S10 linhas 267–278; Ferrari S10 linhas 111–122"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Confirmado: o S2 (dif_sem_acel = 80) deixa a Alfa +1,93 s mais lenta e a Ferrari +1,09 s. É o pior setup nos dois carros.",
+  "fonte": "voltas.csv, setup_id=S2 (média por carro) vs S0"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Dos 10 setups alternativos, 9 melhoram a Alfa e 7 melhoram a Ferrari em relação ao S0 (média).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (Δ médio vs S0)"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "A ordem dos setups é parecida nos dois carros (Spearman ρ = 0,49, p = 0,150). A tendência é positiva, mas não é significativa com só 10 setups. Não dá para afirmar que o mesmo ajuste funciona igual nos dois carros.",
+  "fonte": "voltas.csv, ranking de Δ por setup_id e carro"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Pela volta mais rápida (e não pela média), o S10 da Ferrari marcou 74,575 s, contra 76,200 s no S0; na Alfa, o melhor tempo absoluto foi do S8 (75,852 s).",
+  "fonte": "voltas.csv, mínimo de tempo por carro × setup_id"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "O setup mais consistente da Alfa é o S10 (DP 0,87 s) e o da Ferrari é o S7 (DP 0,96 s). O mais inconsistente nos dois carros: Alfa S8 (1,99 s) e Ferrari S4 (1,89 s).",
+  "fonte": "voltas.csv, desvio-padrão por carro × setup_id"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Testando cada setup contra o S0 (Mann-Whitney, α = 5%), só 3 de 20 comparações são significativas: Alfa Romeo S2, Alfa Romeo S10, Ferrari S10. Com cerca de 11 voltas por setup, a maioria das diferenças fica dentro do ruído.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (teste por carro × setup)"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Alfa no S2: a perda está concentrada no setor 2 (Δ S1 -0,03 s, Δ S2 1,50 s, Δ S3 0,47 s vs S0). O setor do Grampo e do Túnel castiga um diferencial sem aceleração travado.",
+  "fonte": "voltas.csv, setup_id=S2 × S0 da Alfa (setor1_ms, setor2_ms, setor3_ms)"
+ },
+ {
+  "sec": "Setups S0–S10",
+  "txt": "Ferrari no S10: ganho por setor vs S0 de S1 -0,41 s, S2 -0,87 s e S3 -0,26 s.",
+  "fonte": "voltas.csv, setup_id=S10 × S0 da Ferrari"
+ },
+ {
+  "sec": "Stint, pneus e combustível",
+  "txt": "Correlação de Spearman entre a idade do pneu (voltas) e o tempo de volta: ρ = 0,45 (p = 2.8e-15). O tempo piora com o desgaste.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (idade_pneu_voltas × tempo)"
+ },
+ {
+  "sec": "Stint, pneus e combustível",
+  "txt": "Sem as voltas de saída, o tempo médio na volta 2 do pneu é 77,346 s (40 voltas) e na volta 8 é 79,206 s (22 voltas).",
+  "fonte": "voltas.csv, filtro volta_saida=0, média por idade_pneu_voltas"
+ },
+ {
+  "sec": "Stint, pneus e combustível",
+  "txt": "Combustível no início da volta × tempo: ρ = -0,12 (p = 0.0601). A tendência vai na direção esperada (mais leve = mais rápido), mas não é significativa a 5%.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren, 234 voltas com combustivel_inicio não nulo"
+ },
+ {
+  "sec": "Stint, pneus e combustível",
+  "txt": "Consumo médio de combustível por volta: 1,124 kg (mediana 1,145 kg).",
+  "fonte": "voltas.csv, combustivel_inicio − combustivel_fim, 228 voltas válidas para o cálculo"
+ },
+ {
+  "sec": "Stint, pneus e combustível",
+  "txt": "O desgaste máximo do pneu cresce com a idade (ρ = 0,96) e chega a 25,2% em stints de até (14 voltas no máximo).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (desgaste_max_pct, idade_pneu_voltas)"
+ },
+ {
+  "sec": "Stint, pneus e combustível",
+  "txt": "Composto visual: macio 78,336 s (238 voltas) × duro 78,525 s (35 voltas). O duro só aparece na Ferrari (S0, S1 e S6) e na McLaren, então composto e setup se confundem.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (composto_visual)"
+ },
+ {
+  "sec": "Variabilidade do piloto",
+  "txt": "Ruído do piloto no S0 (Ferrari): DP = 1,23 s em 34 voltas, amplitude de 4,41 s.",
+  "fonte": "voltas.csv, carro=ferrari & setup_id=S0 (linhas 2–83)"
+ },
+ {
+  "sec": "Variabilidade do piloto",
+  "txt": "Ruído do piloto no S0 (Alfa Romeo): DP = 1,38 s em 11 voltas, amplitude de 4,13 s.",
+  "fonte": "voltas.csv, carro=alfaromeo & setup_id=S0 (linhas 184–194)"
+ },
+ {
+  "sec": "Variabilidade do piloto",
+  "txt": "DP combinado do S0 nos dois carros: 1,26 s. DP médio dentro de cada carro × setup: 1,32 s (desvio absoluto médio 1,04 s). O número oficial de 1,52 s não bate com o DP do S0. Ele coincide com o DP de TODAS as voltas da Ferrari (1,52 s; Alfa: 1,51 s), ou seja, mistura piloto e setup. A medida pura de ruído do piloto (S0) é 1,26 s.",
+  "fonte": "voltas.csv, setup_id=S0 sem McLaren; agregação por carro × setup_id"
+ },
+ {
+  "sec": "Variabilidade do piloto",
+  "txt": "Comparação crítica: só 3 das 20 deltas de setup são maiores que o ruído do piloto (1,26 s). Isso inclui o S10 nos dois carros e o S2 da Alfa.",
+  "fonte": "voltas.csv, Δ por setup vs DP do S0"
+ },
+ {
+  "sec": "Variabilidade do piloto",
+  "txt": "Tempo médio por sessão: Alfa Romeo sessão 4: 78,88 s; Alfa Romeo sessão 5: 78,10 s; Ferrari sessão 1: 78,51 s; Ferrari sessão 2: 77,79 s; Ferrari sessão 3: 77,60 s. As diferenças entre sessões indicam que o piloto melhora ao longo do tempo (aprendizado).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (média por carro × sessao)"
+ },
+ {
+  "sec": "Variabilidade do piloto",
+  "txt": "Avisos de limite de pista: 0 em todo o dataset. A pilotagem foi limpa.",
+  "fonte": "voltas.csv, linhas 2–278 (avisos_limite_pista)"
+ },
+ {
+  "sec": "Variabilidade do piloto",
+  "txt": "Travadas de roda registradas: 5 no total; frenagens fortes por volta: média de 11,5.",
+  "fonte": "voltas.csv, linhas 2–278 (travadas_roda, frenagens_fortes)"
+ },
+ {
+  "sec": "Correlações",
+  "txt": "Variável mais associada a um tempo de volta menor: vel_media_kmh (ρ = -0,46), seguida de vel_min_sainte_devote (ρ = -0,42) e media_g_lateral_abs (ρ = -0,38).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (Spearman com tempo)"
+ },
+ {
+  "sec": "Correlações",
+  "txt": "Variáveis associadas a um tempo MAIOR: idade_pneu_voltas (ρ = 0,45) e dif_sem_acel (ρ = 0,39).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren"
+ },
+ {
+  "sec": "Correlações",
+  "txt": "O setor que mais explica o tempo total é o S2 (r = 0,86); S1 r = 0,71, S2 r = 0,86, S3 r = 0,72.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (Pearson)"
+ },
+ {
+  "sec": "Correlações",
+  "txt": "Entre as curvas, a velocidade mínima mais ligada ao tempo é a de sainte_devote (ρ = -0,42); a menos ligada é rascasse (ρ = -0,10).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (colunas vel_min_*)"
+ },
+ {
+  "sec": "Correlações",
+  "txt": "Velocidade média × tempo: ρ = -0,46. Velocidade máxima × tempo: ρ = -0,29. Em Mônaco, a velocidade final pesa pouco; o que importa é a velocidade nas curvas.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Treinamos 21 modelos (7 algoritmos × 3 alvos) com validação cruzada GroupKFold de 5 blocos por sessão (session_uid), além de um teste hold-out de 20% das sessões. Para o tempo de volta, o melhor MAE em CV foi do Lasso (1,015 s) contra 1,219 s do baseline.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (273 voltas, 24 features)"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "No teste hold-out (57 voltas de sessões nunca vistas), o melhor MAE foi do Lasso (1,060 s). Para comparação: Random Forest 1,238 s, Lasso 1,060 s e baseline 1,164 s. O número oficial (RF 1,03 s no teste) vem de outra partição, então os valores não são comparáveis diretamente. Nesta partição, o Lasso generaliza melhor que o RF.",
+  "fonte": "voltas.csv, partição GroupShuffleSplit (random_state=42)"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "O R² continua baixo: o melhor R² em CV para o tempo é 0,313 (Lasso). Isso confirma que a maior parte da variação vem do piloto, e não do setup.",
+  "fonte": "voltas.csv, métricas de CV"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "O ganho do melhor modelo sobre o baseline é de 0,204 s de MAE na CV, bem menor que o ruído do piloto (1,26 s).",
+  "fonte": "voltas.csv, métricas de CV vs DP do S0"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Alvo vel. máxima: o melhor modelo foi o Random Forest, com MAE CV de 5,16 km/h (baseline 5,72) e R² CV de 0,10.",
+  "fonte": "voltas.csv, coluna vel_max_kmh, linhas 2–278 sem McLaren"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Alvo vel. média: o melhor modelo foi o Lasso, com MAE CV de 3,99 km/h (baseline 7,10) e R² CV de 0,59.",
+  "fonte": "voltas.csv, coluna vel_media_kmh, linhas 2–278 sem McLaren"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Consenso entre os 6 métodos de importância (média normalizada): top 5 = idade_pneu_voltas (42,7%), dif_sem_acel (26,0%), carro_ferrari (15,0%), convergencia_diant (3,4%), combustivel_setup (2,2%).",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (Lasso, RF, GBM e permutação em CV)"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Lasso |coef|: as 3 features mais importantes são idade_pneu_voltas, dif_sem_acel, carro_ferrari.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (modelo treinado em todas as 273 voltas)"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "RF (impureza): as 3 features mais importantes são idade_pneu_voltas, dif_sem_acel, carro_ferrari.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (modelo treinado em todas as 273 voltas)"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "GBM (impureza): as 3 features mais importantes são idade_pneu_voltas, dif_sem_acel, carro_ferrari.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (modelo treinado em todas as 273 voltas)"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Permutação RF: as 3 features mais importantes são idade_pneu_voltas, carro_ferrari, dif_sem_acel.",
+  "fonte": "voltas.csv, permutação nos folds de validação GroupKFold"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Permutação Lasso: as 3 features mais importantes são idade_pneu_voltas, dif_sem_acel, carro_ferrari.",
+  "fonte": "voltas.csv, permutação nos folds de validação GroupKFold"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Permutação GBM: as 3 features mais importantes são idade_pneu_voltas, dif_sem_acel, carro_ferrari.",
+  "fonte": "voltas.csv, permutação nos folds de validação GroupKFold"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "O Lasso zerou 11 das 24 features e manteve 13. Coeficientes não nulos (s por desvio-padrão): carro_ferrari -0,420, convergencia_diant -0,252, asa_dianteira -0,124, convergencia_tras -0,060, dif_com_acel -0,044, asa_traseira 0,008, suspensao_diant 0,014, composto_duro 0,033, combustivel_setup 0,041, pneu_tras_esq_psi 0,083, altura_tras 0,144, dif_sem_acel 0,540, idade_pneu_voltas 0,667. Sinal negativo = aumentar a variável reduz o tempo.",
+  "fonte": "voltas.csv, linhas 2–278 sem McLaren (LassoCV, α = 0.0432)"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Concordância entre os modelos: a feature idade_pneu_voltas varia só 0 posições de ranking entre os métodos, enquanto convergencia_diant varia 17 posições. Ou seja, os modelos lineares e os de árvore não priorizam exatamente as mesmas variáveis.",
+  "fonte": "voltas.csv, ranking das importâncias"
+ },
+ {
+  "sec": "Importância de features e modelos",
+  "txt": "Um modelo explicativo de telemetria (RF só com velocidades em curvas, % de acelerador e freio) atinge MAE CV de 0,820 s e R² de 0,52, muito melhor que o modelo de setup. As variáveis que mais explicam o tempo: media_g_lateral_abs, vel_max_tunel, pct_freando.",
+  "fonte": "voltas.csv, colunas vel_min_*, pct_* (linhas 2–278 sem McLaren)"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "O amostras.csv tem 1.543.167 amostras de telemetria (cerca de 20 Hz), cobrindo 57 sessões. Isso é mais que as 40 sessões do voltas.csv: há sessões de telemetria sem volta válida correspondente.",
+  "fonte": "amostras.csv, linhas 2–1543168"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Ferrari (amostras em movimento na volta): velocidade média de 147,7 km/h, máxima de 289 km/h, acelerador a fundo em 51,2% das amostras, freio acima de 10% em 17,2%, DRS aberto em 8,2%.",
+  "fonte": "amostras.csv, linhas 2–1543168, filtro carro=ferrari & lap_distance ≥ 0"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Alfa Romeo (amostras em movimento na volta): velocidade média de 149,6 km/h, máxima de 287 km/h, acelerador a fundo em 52,3% das amostras, freio acima de 10% em 17,0%, DRS aberto em 8,4%.",
+  "fonte": "amostras.csv, linhas 2–1543168, filtro carro=alfaromeo & lap_distance ≥ 0"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Maior velocidade registrada em toda a telemetria: 289 km/h (Ferrari, S0), a 1976 m da linha de chegada (região do túnel e da reta).",
+  "fonte": "amostras.csv, linha 48467"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Distribuição de marchas (velocidade > 5 km/h): a marcha mais usada é a 2ª (25,5% do tempo); 8ª marcha só em 0,4%, e 1ª–2ª somam 31,6%. Mônaco é uma pista de marchas médias.",
+  "fonte": "amostras.csv, linhas 2–1543168, filtro velocidade > 5"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Velocidade média por setor da telemetria: S1 184,3 km/h, S2 133,7 km/h, S3 140,2 km/h. O setor mais lento é o S2.",
+  "fonte": "amostras.csv, linhas 2–1543168 (média de velocidade por setor)"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Aceleração lateral: média |g| de 1,29. O pico bruto de 48,58 g é fisicamente impossível (pico de colisão ou falha do pacote UDP), então é preciso remover outliers do g_lateral antes de modelar.",
+  "fonte": "amostras.csv, linhas 2–1543168 (coluna g_lateral)"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Volta mais rápida (74,575 s, Ferrari S10) contra a mais lenta sem volta de saída (83,795 s, Alfa Romeo S2): a velocidade média da telemetria é 154,4 × 139,7 km/h.",
+  "fonte": "voltas.csv, linhas 114 e 166; amostras.csv, linhas 597815–602590 e 905606–910632"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "O maior ganho de velocidade da volta rápida sobre a lenta acontece por volta de 850–875 m (51 km/h a mais), o que mostra onde o tempo se perde.",
+  "fonte": "amostras.csv, linhas das duas voltas (média de velocidade em bins de 25 m de lap_distance)"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Pontos de frenagem (freio passa de <10% para ≥30%): o sinal bruto tem 61 transições na volta mais rápida e 12 na mais lenta, porque o freio pulsa em várias curvas. Agrupando eventos a menos de 80 m de distância, são 12 zonas de frenagem na volta rápida e 10 na lenta (primeiras aos 114, 671, 862, 1049 m).",
+  "fonte": "amostras.csv, linhas 597815–602590 e 905606–910632 (coluna freio)"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Na volta mais rápida, o piloto freia com ≥30% de pressão em 15,8% das amostras; o primeiro ponto de frenagem acontece aos 114 m (Sainte-Dévote).",
+  "fonte": "amostras.csv, linhas 597815–602590"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "No mapa por posição, o trecho mais lento da pista fica em ~1250 m (média 50 km/h, o Grampo Loews) e o mais rápido em ~1950 m (271 km/h, o túnel).",
+  "fonte": "amostras.csv, linhas 2–1543168 (média de velocidade em bins de 50 m de lap_distance)"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Ferrari × Alfa por trecho: a maior vantagem da Ferrari é em ~2750 m (+9,2 km/h). Perto de ~3100 m, a média das duas cai muito por causa de amostras de entrada no box (artefato, não desempenho).",
+  "fonte": "amostras.csv, linhas 2–1543168 (média por bin de 50 m e carro)"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Alfa Romeo S10 × S0 na telemetria: velocidade média de +3,0 km/h, com o maior ganho em ~950 m (+20,6 km/h).",
+  "fonte": "amostras.csv, filtro carro=alfaromeo & setup_id ∈ {S0,S10}"
+ },
+ {
+  "sec": "Telemetria (amostras.csv)",
+  "txt": "Alfa Romeo S2 × S0: a maior perda de velocidade fica em ~1200 m (-12,7 km/h), o que confirma a perda em tração na saída de curva lenta.",
+  "fonte": "amostras.csv, filtro carro=alfaromeo & setup_id ∈ {S0,S2}"
+ }
+]

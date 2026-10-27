@@ -1,0 +1,34 @@
+NaN 0
+padrao (1.1472095756898302, 1.4815469387084785, 0.07070932405212482) (1.1347370390810776, 1.4260698903471976, 0.05602508760844771)
+tunado (1.3649182998326956, 1.771365214444031, -0.3284247932566382) (0.9772366745400586, 1.1898896946289965, 0.3428080455644088) {'regressor__mlpregressor__alpha': np.float64(0.01826894228153233), 'regressor__mlpregressor__early_stopping': False, 'regressor__mlpregressor__hidden_layer_sizes': (32, 16), 'regressor__mlpregressor__learning_rate_init': np.float64(0.0013816356822574799)}
+idade_pneu_voltas    0.710498
+carro_ferrari        0.437376
+flashbacks           0.291613
+combustivel_setup    0.286384
+dif_sem_acel         0.255553
+dtype: float64
+                   MAE_CV_padrão  MAE_CV_tunado  MAE_teste_padrão  MAE_teste_tunado  ganho_CV_s  ganho_CV_%
+modelo                                                                                                     
+ElasticNet                 1.184          1.008             1.093             1.049       0.176      14.885
+Lasso                      1.219          1.017             1.164             1.086       0.202      16.533
+Gradient Boosting          1.130          1.049             1.158             1.075       0.080       7.110
+Extra Trees                1.239          1.094             1.184             1.024       0.144      11.657
+Random Forest              1.153          1.097             1.234             1.184       0.056       4.848
+Ridge                      1.179          1.143             1.144             1.075       0.037       3.126
+MLP (rede neural)          1.147          1.365             1.135             0.977      -0.218     -18.977
+               modelo  versao  MAE_CV  RMSE_CV  R2_CV  MAE_teste  RMSE_teste  R2_teste  MAE_busca_otimista
+0    Baseline (média)       -   1.219    1.557 -0.026      1.164       1.528    -0.084                 NaN
+1               Lasso  padrão   1.219    1.557 -0.026      1.164       1.528    -0.084                 NaN
+2               Lasso  tunado   1.017    1.269  0.318      1.086       1.342     0.164               1.102
+3               Ridge  padrão   1.179    1.505  0.042      1.144       1.394     0.098                 NaN
+4               Ridge  tunado   1.143    1.467  0.089      1.075       1.314     0.199               1.108
+5          ElasticNet  padrão   1.184    1.513  0.031      1.093       1.420     0.065                 NaN
+6          ElasticNet  tunado   1.008    1.256  0.332      1.049       1.287     0.231               1.112
+7       Random Forest  padrão   1.153    1.481  0.072      1.234       1.580    -0.159                 NaN
+8       Random Forest  tunado   1.097    1.393  0.178      1.184       1.446     0.030               1.065
+9         Extra Trees  padrão   1.239    1.551 -0.019      1.184       1.638    -0.245                 NaN
+10        Extra Trees  tunado   1.094    1.380  0.193      1.024       1.244     0.282               1.077
+11  Gradient Boosting  padrão   1.130    1.432  0.132      1.158       1.433     0.047                 NaN
+12  Gradient Boosting  tunado   1.049    1.319  0.263      1.075       1.338     0.170               1.023
+0   MLP (rede neural)  padrão   1.147    1.482  0.071      1.135       1.426     0.056                 NaN
+1   MLP (rede neural)  tunado   1.365    1.771 -0.328      0.977       1.190     0.343               1.074

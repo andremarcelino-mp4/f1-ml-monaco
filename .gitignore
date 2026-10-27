@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+.DS_Store
+node_modules/
+*.mp4
+# amostras brutas do UDP (~240 MB) ficam fora do repositório
+data/amostras.csv
+f1_monaco_out/

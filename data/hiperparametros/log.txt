@@ -1,0 +1,85 @@
+NaN 0
+Lasso 1.218975200128271 1.0174390985063941
+Ridge 1.1794363669663863 1.1425621985815946
+ElasticNet 1.1841754439095062 1.0079056221584286
+Random Forest 1.1534041991104158 1.0974884211700335
+Extra Trees 1.2388579120879128 1.0944493800096433
+Gradient Boosting 1.1295729216046895 1.0492642346019874
+MLP (rede neural) 7.9090654701914245 9.113684235067655
+                   MAE_CV_padrão  MAE_CV_tunado  MAE_teste_padrão  MAE_teste_tunado  ganho_CV_s  ganho_CV_%
+modelo                                                                                                     
+ElasticNet                 1.184          1.008             1.093             1.049       0.176      14.885
+Lasso                      1.219          1.017             1.164             1.086       0.202      16.533
+Gradient Boosting          1.130          1.049             1.158             1.075       0.080       7.110
+Extra Trees                1.239          1.094             1.184             1.024       0.144      11.657
+Random Forest              1.153          1.097             1.234             1.184       0.056       4.848
+Ridge                      1.179          1.143             1.144             1.075       0.037       3.126
+MLP (rede neural)          7.909          9.114             2.415             4.143      -1.205     -15.231
+                    Lasso  Ridge  ElasticNet  Random Forest  Extra Trees  Gradient Boosting  MLP (rede neural)
+asa_dianteira         5.0    6.0        15.0           24.0         22.0               18.0                9.0
+asa_traseira         15.0   23.0        15.0            9.0         11.0                9.0                8.0
+dif_com_acel         15.0    5.0        15.0            8.0          9.0               18.0               18.0
+dif_sem_acel          2.0    3.0         2.0            2.0          3.0                2.0               23.0
+cambagem_diant       15.0   16.0        15.0           20.0         13.0               18.0               10.0
+cambagem_tras        15.0   17.0        15.0           19.0         12.0               18.0               11.0
+convergencia_diant    4.0   10.0         4.0           12.0         14.0                8.0                6.0
+convergencia_tras    15.0   19.0        15.0           13.0          6.0               18.0               19.0
+suspensao_diant      15.0    9.0         5.0           15.0         18.0                5.0                5.0
+suspensao_tras       15.0   14.0        15.0           10.0         15.0                7.0                4.0
+barra_diant          15.0   21.0        15.0           16.0         19.0                6.0               21.0
+barra_tras           15.0   20.0        15.0           18.0         21.0               11.0               15.0
+altura_diant         15.0   13.0        15.0            7.0         16.0               10.0                1.0
+altura_tras          15.0    7.0        15.0            6.0         10.0               18.0                2.0
+freio_balanco        15.0    4.0        15.0           23.0         17.0               18.0                7.0
+pneu_tras_esq_psi    15.0   12.0        15.0           11.0          7.0               18.0               22.0
+pneu_diant_esq_psi   15.0   22.0        15.0           21.0         23.0               18.0                3.0
+combustivel_setup    15.0    8.0        15.0            4.0          4.0                4.0               16.0
+idade_pneu_voltas     1.0    1.0         1.0            1.0          1.0                1.0               20.0
+volta_saida          15.0   15.0        15.0           17.0          5.0               18.0               14.0
+entrou_box           15.0   24.0        15.0           22.0         20.0               18.0               13.0
+flashbacks           15.0   18.0        15.0            5.0          8.0               18.0               24.0
+carro_ferrari         3.0    2.0         3.0            3.0          2.0                3.0               17.0
+composto_duro        15.0   11.0        15.0           14.0         24.0               18.0               12.0
+               Lasso              Ridge         ElasticNet      Random Forest        Extra Trees  Gradient Boosting   MLP (rede neural)
+0  idade_pneu_voltas  idade_pneu_voltas  idade_pneu_voltas  idade_pneu_voltas  idade_pneu_voltas  idade_pneu_voltas        altura_diant
+1       dif_sem_acel      carro_ferrari       dif_sem_acel       dif_sem_acel      carro_ferrari       dif_sem_acel         altura_tras
+2      carro_ferrari       dif_sem_acel      carro_ferrari      carro_ferrari       dif_sem_acel      carro_ferrari  pneu_diant_esq_psi
+{
+"Lasso": {
+"lasso__alpha": 0.13981961408994045
+},
+"Ridge": {
+"ridge__alpha": 41.359973938398895
+},
+"ElasticNet": {
+"elasticnet__alpha": 0.4106842985331807,
+"elasticnet__l1_ratio": 0.5524501737652593
+},
+"Random Forest": {
+"max_depth": 5,
+"max_features": 0.5,
+"min_samples_leaf": 9,
+"n_estimators": 465
+},
+"Extra Trees": {
+"max_depth": null,
+"max_features": 0.3,
+"min_samples_leaf": 3,
+"n_estimators": 328
+},
+"Gradient Boosting": {
+"learning_rate": 0.011385711176633815,
+"max_depth": 1,
+"min_samples_leaf": 15,
+"n_estimators": 402,
+"subsample": 0.923204336235564
+},
+"MLP (rede neural)": {
+"mlpregressor__alpha": 0.08386372010706858,
+"mlpregressor__early_stopping": false,
+"mlpregressor__hidden_layer_sizes": [
+32
+],
+"mlpregressor__learning_rate_init": 0.005767024262051204
+}
+}
