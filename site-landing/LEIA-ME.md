@@ -1,8 +1,19 @@
-Cópia da landing atualizada (teardown 3D, metodologia, links).
+Cópia da landing **sem** a Ferrari desmontada e **sem** as perguntas da banca. A metodologia em texto permanece.
 
-O deploy Vercel lê https://github.com/andremarcelino-mp4/f1-monaco-ml. Este agente não pôde fazer push nesse repositório (403). Para publicar:
+O site em produção é o repo `f1-monaco-ml` (Vercel). Para publicar no seu computador:
 
-1. Copie `index.html`, `css/style.css`, `js/` e `tools/teardown/` para a pasta `landing/` de `f1-monaco-ml`.
-2. Faça commit e push em `main` (ou deixe a Vercel seguir o branch).
+```bash
+git clone https://github.com/andremarcelino-mp4/f1-monaco-ml.git
+cd f1-monaco-ml
+git checkout main
+# deste repositório f1-ml-monaco, branch cursor/metodologia-teardown-91bf:
+cp ../f1-ml-monaco/site-landing/index.html landing/
+cp ../f1-ml-monaco/site-landing/css/style.css landing/css/
+cp ../f1-ml-monaco/site-landing/js/app.js landing/js/
+rm -f landing/js/teardown.js
+rm -rf landing/tools/teardown
+git add landing && git commit -m "Remove garage teardown and banca FAQ"
+git push origin main
+```
 
-`CONFIG.GITHUB` aponta para f1-ml-monaco (estudo). `CONFIG.GITHUB_LANDING` aponta para f1-monaco-ml.
+`CONFIG.GITHUB` aponta para f1-ml-monaco (estudo).
