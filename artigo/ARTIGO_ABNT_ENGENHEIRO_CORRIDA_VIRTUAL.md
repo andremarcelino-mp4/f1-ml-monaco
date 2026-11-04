@@ -33,6 +33,8 @@ SUMÁRIO
 
 2.5 Modelos e validação
 
+2.6 Caminhos metodológicos considerados
+
 3 RESULTADOS
 
 3.1 Análise exploratória
@@ -102,6 +104,8 @@ A principal contribuição é metodológica: mostrar, com dados reais de captura
 
 # 2 MATERIAL E MÉTODOS
 
+A seção descreve, em ordem, as decisões que transformaram pacotes UDP em um experimento de acerto. Cada subseção corresponde a um passo: capturar, desenhar os tratamentos, definir a amostra, escolher o que entra no modelo e validar sem vazar sessão. A Subseção 2.6 registra ideias alternativas que foram consideradas e descartadas, para que a banca veja o desenho como escolha, não como o único caminho possível.
+
 ## 2.1 Coleta de dados: telemetria UDP do F1 23
 
 A captura foi feita com o programa `capturar_telemetria.py`, escrito em Python apenas com a biblioteca padrão. O programa escuta a porta UDP 20777 e decodifica os pacotes no formato 2023 descrito na especificação oficial do jogo (Electronic Arts, 2023). Foram usados os pacotes *Motion* (posição `world_x`/`world_z` e forças G), *Session* (pista; `trackId = 5` corresponde a Mônaco), *Lap Data*, *Car Telemetry* (velocidade, acelerador, freio, marcha e DRS), *Car Setups* e *Session History*. O programa grava dois arquivos:
@@ -161,6 +165,28 @@ b) teste *hold-out* com 20% das sessões (GroupShuffleSplit, semente 42), o que 
 c) ajuste de hiperparâmetros por busca aleatória (Bergstra; Bengio, 2012), com RandomizedSearchCV (30 combinações, GroupKFold interno de 4 blocos, otimizando o MAE), em validação cruzada aninhada: a busca ocorre apenas dentro do treino de cada bloco externo, o que evita estimativas otimistas (Varma; Simon, 2006).
 
 As métricas reportadas são MAE, RMSE e R². A importância das variáveis foi estimada por seis métodos: valor absoluto do coeficiente do Lasso, importância por impureza (RF e GBM) e importância por permutação nos blocos de validação (RF, Lasso e GBM). Os seis rankings foram combinados em uma média normalizada, chamada aqui de consenso. As comparações entre acertos usaram o teste de Mann-Whitney (Mann; Whitney, 1947), com α = 5%, e as associações monotônicas, a correlação de Spearman (Spearman, 1904). O projeto mantém ainda notebooks equivalentes para o Google Colab e um leitor de dados em R, no fluxo *tidymodels* (Kuhn; Silge, 2022) trabalhado na disciplina. Os modelos finais foram publicados em uma API (FastAPI) consumida pela página do projeto (Marcelino, 2026a, 2026b).
+
+## 2.6 Caminhos metodológicos considerados
+
+Antes de fixar o protocolo das Subseções 2.1 a 2.5, outras ideias foram escritas e rejeitadas. Elas permanecem úteis como mapa do que este artigo *não* pretende ser.
+
+A primeira foi rodar o experimento no modo *Time Trial*. Nesse modo o jogo iguala o desempenho dos carros, o que simplifica a comparação de acertos, mas apaga o efeito de equipe. No consenso de importância, o indicador Ferrari responde por cerca de 15% do total; eliminar essa variação teria tornado o “engenheiro virtual” cego a uma das poucas alavancas que de fato separam as voltas. Por isso manteve-se o Grande Prêmio, treino livre, com desempenho real dos carros.
+
+A segunda foi um fatorial completo nos 18 parâmetros de acerto. Com dois níveis por fator, o desenho exigiria 2¹⁸ células; mesmo um fatorial fracionado de baixa resolução, com dez voltas por célula e um único piloto, ultrapassa o tempo disponível. O compromisso adotado — S0, nove mudanças de um fator (S1 a S9) e um acerto multifatorial (S10) — sacrifica interações completas em troca de causas identificáveis e de um teste explícito da sugestão de IA.
+
+A terceira foi descartar voltas de saída, box e *flashback*. Isso limparia o alvo, mas removeria 15,2% das voltas de saída, 9,0% das que terminam no box e até 100 voltas com pelo menos um *flashback*, em uma amostra de 277 linhas. A opção foi mantê-las e tratar os indicadores como contexto, para que o modelo absorva parte do ruído operacional em vez de fingir que ele não existe.
+
+A quarta foi validar com KFold aleatório, embaralhando voltas. Voltas da mesma `session_uid` compartilham pneu, combustível e o ritmo daquele dia; o MAE cairia por vazamento, não por generalização. O GroupKFold por sessão e o *hold-out* de 20% das sessões existem precisamente para impedir esse atalho.
+
+A quinta foi incluir, como preditores do tempo, velocidades em curva, tempos de setor e outros agregados da telemetria. Esses números só existem *depois* da volta. Usá-los na trilha preditiva vazaria o alvo. Eles ficaram na análise exploratória e em um modelo explicativo separado (Seção 3.4).
+
+A sexta foi apostar só em conjuntos de árvores, ou só em uma rede MLP, como “modelo de deep learning” da disciplina. Com cerca de 270 observações, árvores profundas decoram o ruído do piloto e a MLP entrou apenas como exploração, com alvo padronizado e só no tempo de volta. A família reportada como principal é a dos lineares regularizados, comparada de forma explícita ao *baseline* da média.
+
+A sétima foi modelar a volta como sequência (HMM, LSTM ou similar) sobre as ~20 Hz de `amostras.csv`. Isso responderia *onde* o tempo se perde, não *qual acerto escolher antes de sair do box*. Fica como trabalho futuro; o objeto deste artigo é a decisão de setup.
+
+A oitava foi ranquear variáveis só pela impureza de uma Random Forest. Rankings de árvore e de Lasso discordam, sobretudo na convergência dianteira. O consenso de seis métodos (coeficiente, impureza e permutação) é a forma de não entregar à banca um único ranking conveniente.
+
+Nenhuma dessas alternativas é “errada” em abstrato. Cada uma responde a outra pergunta. A pergunta deste trabalho é mais estreita: com um piloto, uma pista e pouco mais de 270 voltas, o que o acerto ainda explica depois que se respeita o ruído do piloto e a dependência entre voltas da mesma sessão.
 
 # 3 RESULTADOS
 

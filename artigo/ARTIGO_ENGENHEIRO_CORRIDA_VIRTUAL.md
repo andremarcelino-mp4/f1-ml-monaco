@@ -31,6 +31,8 @@ A principal contribuição é metodológica: mostrar, com dados reais de captura
 
 ## 2 Metodologia
 
+A seção segue o pipeline do experimento: capturar a telemetria, desenhar os tratamentos, definir a amostra, escolher preditores sem vazamento e validar por sessão. A Subseção 2.6 registra ideias alternativas que foram consideradas e descartadas.
+
 ### 2.1 Coleta de dados: telemetria UDP do F1 23
 
 A captura foi feita com o programa `capturar_telemetria.py`, escrito em Python usando apenas a biblioteca padrão. Ele escuta a porta UDP 20777 e decodifica os pacotes no formato 2023 descrito na especificação oficial "Data Output from F1 23" (EA/Codemasters). Foram usados os pacotes *Motion* (posição `world_x/world_z` e forças G), *Session* (pista; `trackId = 5` corresponde a Mônaco), *Lap Data*, *Car Telemetry* (velocidade, acelerador, freio, marcha, DRS), *Car Setups* e *Session History*. O programa grava dois arquivos:
@@ -85,6 +87,28 @@ Como voltas da mesma sessão compartilham condições (pneus, combustível, ritm
 - **ajuste de hiperparâmetros** com RandomizedSearchCV (30 combinações, GroupKFold interno de 4 blocos, otimizando o MAE) em **validação cruzada aninhada**. A busca ocorre apenas dentro do treino de cada bloco externo, o que evita estimativas otimistas.
 
 As métricas reportadas são MAE, RMSE e R². A importância das variáveis foi estimada por seis métodos: |coeficiente| do Lasso, importância por impureza (RF e GBM) e importância por permutação nos blocos de validação (RF, Lasso e GBM). Os seis rankings foram combinados em uma média normalizada (consenso). As comparações entre acertos usaram o teste de Mann-Whitney (α = 5 %), e as associações monotônicas, a correlação de Spearman. O projeto também mantém notebooks equivalentes para o Google Colab e um leitor de dados em R, na linha do fluxo *tidymodels* trabalhado na disciplina. Os modelos finais foram publicados em uma API (FastAPI) consumida pela página do projeto.
+
+### 2.6 Caminhos metodológicos considerados
+
+Antes de fixar o protocolo, outras ideias foram escritas e rejeitadas. Elas mostram o que este artigo *não* pretende ser.
+
+**Time Trial.** Igualar os carros apagaria o efeito de equipe. No consenso, o indicador Ferrari vale cerca de 15 % da importância; o experimento ficou no Grande Prêmio, treino livre, com desempenho real dos carros.
+
+**Fatorial 2¹⁸.** Dezoito parâmetros com dois níveis cada, mais dez voltas por célula e um piloto, não cabem no tempo disponível. O compromisso foi S0, nove mudanças de um fator (S1–S9) e um acerto multifatorial (S10).
+
+**Descartar saída, box e flashback.** Limparia o alvo, mas cortaria 15,2 % das voltas de saída, 9,0 % das que terminam no box e até 100 voltas com flashback, numa amostra de 277. A opção foi mantê-las e usá-las como contexto.
+
+**KFold aleatório.** Voltas da mesma sessão compartilham pneu, combustível e ritmo; o MAE cairia por vazamento. Por isso GroupKFold por `session_uid` e *hold-out* de 20 % das sessões.
+
+**Telemetria de ponto como preditor do tempo.** Velocidade no túnel ou tempo de setor só existem depois da volta. Usá-los na trilha preditiva vazaria o alvo; ficaram na EDA e num modelo explicativo (Seção 3.4).
+
+**Só árvores, ou só MLP.** Com cerca de 270 observações, árvores profundas decoram o ruído do piloto. A MLP entrou como exploração. A família principal são os lineares regularizados, sempre contra o *baseline* da média.
+
+**Sequência (HMM/LSTM) nas amostras a 20 Hz.** Responderia *onde* o tempo se perde, não *qual acerto escolher no box*. Fica como trabalho futuro.
+
+**Importância só por impureza.** Lasso e árvores discordam (convergência dianteira). O consenso de seis rankings evita entregar um único ranking conveniente.
+
+Nenhuma alternativa é “errada” em abstrato. Cada uma responde a outra pergunta. Aqui a pergunta é estreita: com um piloto, uma pista e pouco mais de 270 voltas, o que o acerto ainda explica depois do ruído do piloto e da dependência entre voltas da mesma sessão.
 
 ## 3 Resultados
 
